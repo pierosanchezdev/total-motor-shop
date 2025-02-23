@@ -1,0 +1,176 @@
+<div th:fragment="productos-modals" xmlns:th="http://www.w3.org/1999/xhtml">
+
+  <!-- Modal para Crear Producto -->
+  <div class="modal fade" id="crearProductosModal" tabindex="-1" aria-labelledby="crearProductosLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="crearProductosLabel">Crear Producto</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+        </div>
+        <div class="modal-body">
+          <form th:action="@{/productos/crear}" method="post" th:object="${producto}">
+            <div class="mb-3">
+              <label class="form-label">Nombre</label>
+              <input type="text" class="form-control" th:field="*{nombre}" required>
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Precio Unitario</label>
+              <input type="number" step="0.01" class="form-control" th:field="*{precioUnitario}" required>
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Stock</label>
+              <input type="number" class="form-control" th:field="*{stock}" required>
+            </div>
+
+            <!-- Categoría -->
+            <div class="mb-3">
+              <label class="form-label">Categoría</label>
+              <select class="form-select" th:field="*{categoria.id}" required>
+                <option value="">Seleccione una categoría</option>
+                <option th:each="categoria : ${categorias}" th:value="${categoria.id}" th:text="${categoria.nombreCategoria}"></option>
+              </select>
+            </div>
+
+            <!-- Proveedor -->
+            <div class="mb-3">
+              <label class="form-label">Proveedor</label>
+              <select class="form-select" th:field="*{proveedor.id}" required>
+                <option value="">Seleccione un proveedor</option>
+                <option th:each="proveedor : ${proveedores}" th:value="${proveedor.id}" th:text="${proveedor.nombre}"></option>
+              </select>
+            </div>
+
+            <!-- Selección de Vehículos -->
+            <div class="mb-3">
+              <label class="form-label">Vehículos</label>
+              <div class="d-flex">
+                <select class="form-select" id="vehiculoSelect">
+                  <option value="">Seleccione un vehículo</option>
+                  <option th:each="vehiculo : ${vehiculos}" th:value="${vehiculo.id}" th:text="${vehiculo.modelo}"></option>
+                </select>
+                <button type="button" class="btn btn-primary ms-2" onclick="agregarVehiculo()">Agregar</button>
+              </div>
+            </div>
+
+            <!-- Lista de Vehículos Seleccionados -->
+            <div class="mb-3">
+              <label class="form-label">Vehículos Agregados:</label>
+              <ul id="vehiculosSeleccionados" class="list-group"></ul>
+            </div>
+
+            <!-- Campo Oculto para Vehículos -->
+            <input type="hidden" id="vehiculosInput" name="vehiculosSeleccionados">
+
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+              <button type="submit" class="btn btn-primary">Guardar</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal para Editar Producto -->
+  <div class="modal fade" id="editarProductosModal" tabindex="-1" aria-labelledby="editarProductosLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="editarProductosLabel">Editar Producto</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+        </div>
+        <div class="modal-body">
+          <form id="editarProductosForm" method="post" th:action="@{/productos/editar}">
+            <input type="hidden" name="id" id="editar-id">
+            <div class="mb-3">
+              <label class="form-label">Nombre</label>
+              <input type="text" class="form-control" id="editar-nombre" name="nombre" required>
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Precio Unitario</label>
+              <input type="number" step="0.01" class="form-control" id="editar-precioUnitario" name="precioUnitario" required>
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Stock</label>
+              <input type="number" class="form-control" id="editar-stock" name="stock" required>
+            </div>
+
+            <!-- Categoría -->
+            <div class="mb-3">
+              <label class="form-label">Categoría</label>
+              <select class="form-select" id="editar-categoria" name="categoria.id" required>
+                <option value="">Seleccione una categoría</option>
+                <option th:each="categoria : ${categorias}" th:value="${categoria.id}" th:text="${categoria.nombreCategoria}"></option>
+              </select>
+            </div>
+
+            <!-- Proveedor -->
+            <div class="mb-3">
+              <label class="form-label">Proveedor</label>
+              <select class="form-select" id="editar-proveedor" name="proveedor.id" required>
+                <option value="">Seleccione un proveedor</option>
+                <option th:each="proveedor : ${proveedores}" th:value="${proveedor.id}" th:text="${proveedor.nombre}"></option>
+              </select>
+            </div>
+
+            <!-- Selección de Vehículos -->
+            <div class="mb-3">
+              <label class="form-label">Vehículos</label>
+              <div class="d-flex">
+                <select class="form-select" id="editar-vehiculoSelect">
+                  <option value="">Seleccione un vehículo</option>
+                  <option th:each="vehiculo : ${vehiculos}" th:value="${vehiculo.id}" th:text="${vehiculo.modelo}"></option>
+                </select>
+                <button type="button" class="btn btn-primary ms-2" onclick="agregarVehiculoEdicion()">Agregar</button>
+              </div>
+            </div>
+
+            <!-- Lista de Vehículos Seleccionados -->
+            <div class="mb-3">
+              <label class="form-label">Vehículos Agregados:</label>
+              <ul id="editar-vehiculosSeleccionados" class="list-group"></ul>
+            </div>
+
+            <!-- Campo Oculto para Vehículos -->
+            <input type="hidden" id="editar-vehiculosInput" name="vehiculosSeleccionados">
+
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+              <button type="submit" class="btn btn-primary">Guardar</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal para Detalle del Producto -->
+  <div class="modal fade" id="detalleProductosModal" tabindex="-1" aria-labelledby="detalleProductosLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="detalleProductosLabel">Detalles del Producto</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+        </div>
+        <div class="modal-body">
+          <p><strong>Nombre:</strong> <span id="detalle-nombre"></span></p>
+          <p><strong>Precio Unitario:</strong> <span id="detalle-precioUnitario"></span></p>
+          <p><strong>Stock:</strong> <span id="detalle-stock"></span></p>
+          <p><strong>Categoría:</strong> <span id="detalle-categoria"></span></p>
+          <p><strong>Proveedor:</strong> <span id="detalle-proveedor"></span></p>
+
+          <!-- Lista de Vehículos -->
+          <p><strong>Vehículos Compatibles:</strong></p>
+          <ul id="detalle-vehiculos" class="list-group"></ul>
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+</div>

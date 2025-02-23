@@ -1,0 +1,107 @@
+<div th:fragment="categorias-modals" xmlns:th="http://www.w3.org/1999/xhtml">
+
+  <!-- Modal para Crear Categoria -->
+  <div class="modal fade" id="crearCategoriaModal" tabindex="-1" aria-labelledby="crearCategoriaLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="crearCategoriaLabel">Crear Categoria</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+        </div>
+        <div class="modal-body">
+          <form th:action="@{/categorias/crear}" method="post" th:object="${categoria}">
+            <div class="mb-3">
+              <label for="crear-nombreCategoria" class="form-label">Nombre</label>
+              <input type="text" class="form-control" id="crear-nombreCategoria" th:field="*{nombreCategoria}" required>
+            </div>
+            <div class="mb-3">
+              <label for="crear-descripcion" class="form-label">Descripcion</label>
+              <input type="text" class="form-control" id="crear-descripcion" th:field="*{descripcion}">
+            </div>
+            <div class="mb-3">
+              <label for="crear-categoriaPadre" class="form-label">Categoría Padre</label>
+              <select class="form-select" id="crear-categoriaPadre" th:field="*{categoriaPadre}">
+                <option value="">Ninguna (Categoría Padre)</option>
+                <option th:each="cat : ${categorias}" th:value="${cat.id}" th:text="${cat.nombreCategoria}"></option>
+              </select>
+            </div>
+            <div class="mb-3">
+              <label for="crear-estado" class="form-label">Estado</label>
+              <select class="form-select" id="crear-estado" th:field="*{estado}">
+                <option value="true">Activo</option>
+                <option value="false">Inactivo</option>
+              </select>
+            </div>
+            <div class="modal-footer">
+              <button type="submit" class="btn btn-primary">Guardar</button>
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal para Editar Categoria -->
+  <div class="modal fade" id="editarCategoriaModal" tabindex="-1" aria-labelledby="editarCategoriaLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="editarCategoriaLabel">Editar Categoria</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+        </div>
+        <div class="modal-body">
+          <form id="editarCategoriaForm" method="post" th:action="@{/categorias/editar}">
+            <input type="hidden" name="id" id="editar-id">
+            <div class="mb-3">
+              <label for="editar-nombreCategoria" class="form-label">Nombre</label>
+              <input type="text" class="form-control" id="editar-nombreCategoria" name="nombreCategoria" required>
+            </div>
+            <div class="mb-3">
+              <label for="editar-descripcion" class="form-label">Descripción</label>
+              <input type="text" class="form-control" id="editar-descripcion" name="descripcion">
+            </div>
+            <div class="mb-3">
+              <label for="editar-categoriaPadre" class="form-label">Categoría Padre</label>
+              <select class="form-select" id="editar-categoriaPadre" name="categoriaPadre">
+                <option value="">Ninguna (Categoría Padre)</option>
+                <option th:each="cat : ${categorias}" th:value="${cat.id}" th:text="${cat.nombreCategoria}"></option>
+              </select>
+            </div>
+            <div class="mb-3">
+              <label for="editar-estado" class="form-label">Estado</label>
+              <select class="form-select" id="editar-estado" name="estado">
+                <option value="true">Activo</option>
+                <option value="false">Inactivo</option>
+              </select>
+            </div>
+            <div class="modal-footer">
+              <button type="submit" class="btn btn-primary">Guardar</button>
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal fade" id="detalleCategoriaModal" tabindex="-1" aria-labelledby="detalleCategoriaLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="detalleCategoriaLabel">Detalles del Categoria</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+        </div>
+        <div class="modal-body">
+          <p><strong>Nombre:</strong> <span id="detalle-nombreCategoria"></span></p>
+          <p><strong>Descripción:</strong> <span id="detalle-descripcion"></span></p>
+          <p><strong>Categoría Padre:</strong> <span id="detalle-categoriaPadre"></span></p>
+          <p><strong>Estado:</strong> <span id="detalle-estado"></span></p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

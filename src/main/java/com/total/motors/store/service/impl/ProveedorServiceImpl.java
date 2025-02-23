@@ -32,4 +32,27 @@ public class ProveedorServiceImpl implements ProveedorService {
     public void crearProveedor(Proveedor proveedor) {
         proveedorDao.save(proveedor);
     }
+
+    @Override
+    public Proveedor obtenerProveedorPorId(Long id) {
+        return proveedorDao.findById(id).orElseThrow(() -> new RuntimeException("Proveedor no encontrado"));
+    }
+
+    @Override
+    public void actualizarProveedor(Proveedor proveedor) {
+        if (proveedorDao.existsById(proveedor.getId())) {
+            proveedorDao.save(proveedor);
+        } else {
+            throw new RuntimeException("Proveedor no encontrado");
+        }
+    }
+
+    @Override
+    public void eliminarProveedor(Long id) {
+        if (proveedorDao.existsById(id)) {
+            proveedorDao.deleteById(id);
+        } else {
+            throw new RuntimeException("Proveedor no encontrado");
+        }
+    }
 }

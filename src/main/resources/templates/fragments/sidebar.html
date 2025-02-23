@@ -1,0 +1,28 @@
+<!-- sidebar.html -->
+<div th:fragment="sidebar" class="sidebar" xmlns:th="http://www.w3.org/1999/xhtml">
+  <h4 class="text-center">Menú</h4>
+  <div class="menu-toggle" onclick="toggleSubMenu('ventasSubmenu')">
+    <span>Ventas</span> <i class="bi bi-chevron-down"></i>
+  </div>
+  <div id="ventasSubmenu" class="submenu">
+    <a href="/pedidos">Registrar pedido</a>
+    <a href="/pedidos/cobrar">Cobrar pedido</a>
+  </div>
+  <div class="menu-toggle" onclick="toggleSubMenu('InventarioSubmenu')">
+    <span>Inventario</span> <i class="bi bi-chevron-down"></i>
+  </div>
+  <div id="InventarioSubmenu" class="submenu">
+    <a href="/productos">Productos</a>
+    <a href="/stock">Stock</a>
+  </div>
+  <a href="/clientes">Clientes</a>
+  <div class="menu-toggle" onclick="toggleSubMenu('mantenimientoSubmenu')">
+    <span>Mantenimiento</span> <i class="bi bi-chevron-down"></i>
+  </div>
+  <div id="mantenimientoSubmenu" class="submenu">
+    <a href="/proveedores">Proveedores</a>
+    <a href="/vehiculos">Vehículos</a>
+    <a href="/usuarios">Usuarios</a>
+    <a href="/categorias">Categorías</a>
+  </div>
+</div>

@@ -1,5 +1,6 @@
 package com.total.motors.store.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -26,6 +27,7 @@ public class Vehiculo {
     private String version;
 
     @ManyToMany(mappedBy = "vehiculos")
+    @JsonIgnore
     private List<Producto> productos;
 
     private boolean estado;

@@ -1,0 +1,119 @@
+<div th:fragment="vehiculos-modals" xmlns:th="http://www.w3.org/1999/xhtml">
+
+    <!-- Modal para Crear Vehiculo -->
+    <div class="modal fade" id="crearVehiculoModal" tabindex="-1" aria-labelledby="crearVehiculoLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="crearVehiculoLabel">Crear Vehiculo</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                </div>
+                <div class="modal-body">
+                    <form th:action="@{/vehiculos/crear}" method="post" th:object="${vehiculo}">
+                        <div class="mb-3">
+                            <label for="crear-marca" class="form-label">Marca</label>
+                            <input type="text" class="form-control" id="crear-marca" th:field="*{marca}" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="crear-modelo" class="form-label">Modelo</label>
+                            <input type="text" class="form-control" id="crear-modelo" th:field="*{modelo}">
+                        </div>
+                        <div class="mb-3">
+                            <label for="crear-anio" class="form-label">Año</label>
+                            <input type="text" class="form-control" id="crear-anio" th:field="*{anio}">
+                        </div>
+                        <div class="mb-3">
+                            <label for="crear-tipoCaja" class="form-label">Tipo Caja</label>
+                            <input type="text" class="form-control" id="crear-tipoCaja" th:field="*{tipoCaja}" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="crear-version" class="form-label">Versión</label>
+                            <input type="text" class="form-control" id="crear-version" th:field="*{version}" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="crear-estado" class="form-label">Estado</label>
+                            <select class="form-select" id="crear-estado" th:field="*{estado}">
+                                <option value="true">Activo</option>
+                                <option value="false">Inactivo</option>
+                            </select>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-primary">Guardar</button>
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal para Editar Vehiculo -->
+    <div class="modal fade" id="editarVehiculoModal" tabindex="-1" aria-labelledby="editarVehiculoLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editarVehiculoLabel">Editar Vehiculo</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="editarVehiculoForm" method="post" th:action="@{/vehiculos/editar}">
+                        <input type="hidden" name="id" id="editar-id">
+                        <div class="mb-3">
+                            <label for="editar-marca" class="form-label">Marca</label>
+                            <input type="text" class="form-control" id="editar-marca" name="marca" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="editar-modelo" class="form-label">Modelo</label>
+                            <input type="text" class="form-control" id="editar-modelo" name="modelo">
+                        </div>
+                        <div class="mb-3">
+                            <label for="editar-anio" class="form-label">Año</label>
+                            <input type="text" class="form-control" id="editar-anio" name="anio">
+                        </div>
+                        <div class="mb-3">
+                            <label for="editar-tipoCaja" class="form-label">Tipo Caja</label>
+                            <input type="text" class="form-control" id="editar-tipoCaja" name="tipoCaja" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="editar-version" class="form-label">Versión</label>
+                            <input type="text" class="form-control" id="editar-version" name="version" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="editar-estado" class="form-label">Estado</label>
+                            <select class="form-select" id="editar-estado" name="estado">
+                                <option value="true">Activo</option>
+                                <option value="false">Inactivo</option>
+                            </select>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-primary">Guardar</button>
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="detalleVehiculoModal" tabindex="-1" aria-labelledby="detalleVehiculoLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="detalleVehiculoLabel">Detalles del Vehiculo</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                </div>
+                <div class="modal-body">
+                    <p><strong>Marca:</strong> <span id="detalle-marca"></span></p>
+                    <p><strong>Modelo:</strong> <span id="detalle-modelo"></span></p>
+                    <p><strong>Año:</strong> <span id="detalle-anio"></span></p>
+                    <p><strong>Tipo Caja:</strong> <span id="detalle-tipoCaja"></span></p>
+                    <p><strong>Version:</strong> <span id="detalle-version"></span></p>
+                    <p><strong>Estado:</strong> <span id="detalle-estado"></span></p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

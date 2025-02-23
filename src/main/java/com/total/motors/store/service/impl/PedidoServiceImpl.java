@@ -36,10 +36,9 @@ public class PedidoServiceImpl implements PedidoService {
 
     @Override
     public Pedido crearPedido(Long idCliente, Map<Long, Integer> productosSeleccionados, String usuarioRegistro) {
-        Cliente cliente = clienteService.buscarClientePorId(idCliente)
-                .orElseThrow(() -> new RuntimeException("Cliente no encontrado"));
+        Cliente cliente = clienteService.obtenerClientePorId(idCliente);
 
-        List<Producto> productos = productoService.buscarProductosPorId(new ArrayList<>(productosSeleccionados.keySet()));
+        List<Producto> productos = productoService.obtenerProductosPorId(new ArrayList<>(productosSeleccionados.keySet()));
 
         BigDecimal subtotal = BigDecimal.ZERO;
         List<PedidoProducto> pedidoProductos = new ArrayList<>();
@@ -53,7 +52,7 @@ public class PedidoServiceImpl implements PedidoService {
         pedido.setFechaActualizacion(LocalDateTime.now());
         pedido.setUsuarioActualizacion(usuarioRegistro);
 
-        Pedido pedidoGuardado = pedidoDao.save(pedido); // Primero guardamos el pedido
+        Pedido pedidoGuardado = pedidoDao.save(pedido);
 
         for (Producto producto : productos) {
             int cantidad = productosSeleccionados.getOrDefault(producto.getId(), 1);
@@ -74,9 +73,9 @@ public class PedidoServiceImpl implements PedidoService {
         BigDecimal total = subtotal.add(igv);
 
         pedidoGuardado.setImporte(total);
-        pedidoDao.save(pedidoGuardado); // 🔹 Actualizamos el importe del pedido
+        pedidoDao.save(pedidoGuardado);
 
-        pedidoProductoDao.saveAll(pedidoProductos); // 🔹 Guardamos `PedidoProducto`
+        pedidoProductoDao.saveAll(pedidoProductos);
 
         return pedidoGuardado;
     }

@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gestión de Usuarios</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
+  <link rel="stylesheet" th:href="@{/css/styles.css}">
+</head>
+<body>
+<div th:replace="~{fragments/header :: header}"></div>
+<div th:replace="~{fragments/sidebar :: sidebar}"></div>
+<div class="content">
+  <div th:if="${mensajeError}" class="alert alert-danger position-fixed top-0 start-50 translate-middle-x mt-3" role="alert">
+    <span th:text="${mensajeError}"></span>
+  </div>
+
+  <h2>Gestión de Usuarios</h2>
+  <div class="d-flex justify-content-between mb-3">
+    <!--div>
+      <label for="buscarUsuario" class="form-label">Buscar usuario:</label>
+      <input type="text" id="buscarUsuario" class="form-control" placeholder="Ingrese nombre o RUC">
+    </--div-->
+    <div></div>
+    <div class="align-self-end">
+      <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#crearUsuarioModal">Crear Usuario</button>
+    </div>
+  </div>
+
+  <div class="table-container">
+    <table class="table table-striped">
+      <thead>
+      <tr>
+        <th>Usuario</th>
+        <th>Correo</th>
+        <th>Estado</th>
+        <th>Acciones</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr th:each="usuario : ${usuarios}">
+        <td th:text="${usuario.username}"></td>
+        <td th:text="${usuario.email}"></td>
+        <td th:text="${usuario.estado ? 'Activo' : 'Inactivo'}"></td>
+        <td>
+          <button class="btn btn-warning btn-sm editar-btn" th:attr="data-id=${usuario.id}" data-bs-toggle="modal" data-bs-target="#editarUsuarioModal">
+            <i class="bi bi-pencil-square"></i>
+          </button>
+          <button class="btn btn-info btn-sm ver-detalle-btn" th:attr="data-id=${usuario.id}" data-bs-toggle="modal" data-bs-target="#detalleUsuarioModal">
+            <i class="bi bi-eye"></i>
+          </button>
+          <a th:href="@{'/usuarios/eliminar/' + ${usuario.id}}" class="btn btn-danger btn-sm" title="Eliminar" onclick="return confirm('¿Está seguro de eliminar este usuario?');">
+            <i class="bi bi-trash"></i>
+          </a>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Agregar paginación -->
+  <nav aria-label="Page navigation" class="d-flex justify-content-center">
+    <ul class="pagination">
+      <li class="page-item" th:classappend="${currentPage == 0} ? 'disabled'">
+        <a class="page-link" th:href="@{/usuarios(page=${currentPage - 1})}" aria-label="Anterior">
+          <span aria-hidden="true">&laquo;</span>
+        </a>
+      </li>
+      <li class="page-item" th:each="i : ${#numbers.sequence(0, totalPages - 1)}"
+          th:classappend="${currentPage == i} ? 'active'">
+        <a class="page-link" th:href="@{/usuarios(page=${i})}" th:text="${i + 1}"></a>
+      </li>
+      <li class="page-item" th:classappend="${currentPage == totalPages - 1} ? 'disabled'">
+        <a class="page-link" th:href="@{/usuarios(page=${currentPage + 1})}" aria-label="Siguiente">
+          <span aria-hidden="true">&raquo;</span>
+        </a>
+      </li>
+    </ul>
+  </nav>
+
+</div>
+<div th:replace="~{fragments/usuarios-modals :: usuarios-modals}"></div>
+<div th:replace="~{fragments/footer_script :: footer}"></div>
+<script th:src="@{/js/usuarios.js}"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+  function toggleSubMenu(menuId) {
+      var submenu = document.getElementById(menuId);
+      if (submenu.classList.contains("show")) {
+          submenu.classList.remove("show");
+      } else {
+          submenu.classList.add("show");
+      }
+  }
+</script>
+</body>
+</html>

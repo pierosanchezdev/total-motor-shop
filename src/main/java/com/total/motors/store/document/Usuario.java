@@ -1,5 +1,6 @@
 package com.total.motors.store.document;
 
+import com.total.motors.store.entity.Persona;
 import jakarta.persistence.Id;
 import lombok.Data;
 import lombok.Getter;
@@ -11,7 +12,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @Getter
 @Setter
 @NoArgsConstructor
-public class Usuario {
+public class Usuario extends Persona {
 
     @Id
     private String id;
@@ -19,7 +20,7 @@ public class Usuario {
     private String username;
     private String password;
 
-    public Usuario(String username, String password){
+    public Usuario(String username, String password) {
         this.username = username;
         this.password = password;
     }

@@ -20,7 +20,6 @@ public class Categoria {
 
     @Column(nullable = false)
     private String nombreCategoria;
-
     private String descripcion;
     private boolean estado;
     private LocalDateTime fechaRegistro;

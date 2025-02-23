@@ -1,0 +1,146 @@
+<div th:fragment="clientes-modals" xmlns:th="http://www.w3.org/1999/xhtml">
+
+  <!-- Modal para Crear Cliente -->
+  <div class="modal fade" id="crearClienteModal" tabindex="-1" aria-labelledby="crearClienteLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="crearClienteLabel">Crear Cliente</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+        </div>
+        <div class="modal-body">
+          <form th:action="@{/clientes/crear}" method="post" th:object="${cliente}">
+            <div class="mb-3">
+              <label for="crear-nombres" class="form-label">Nombres</label>
+              <input type="text" class="form-control" id="crear-nombres" th:field="*{nombres}" required>
+            </div>
+            <div class="mb-3">
+              <label for="crear-apellidos" class="form-label">Apellidos</label>
+              <input type="text" class="form-control" id="crear-apellidos" th:field="*{apellidos}">
+            </div>
+            <div class="mb-3">
+              <label for="crear-dni" class="form-label">DNI</label>
+              <input type="text" class="form-control" id="crear-dni" th:field="*{dni}">
+            </div>
+            <div class="mb-3">
+              <label for="crear-direccion" class="form-label">Dirección</label>
+              <input type="text" class="form-control" id="crear-direccion" th:field="*{direccion}">
+            </div>
+            <div class="mb-3">
+              <label for="crear-telefono" class="form-label">Teléfono</label>
+              <input type="number" class="form-control" id="crear-telefono" th:field="*{telefono}" required>
+            </div>
+            <div class="mb-3">
+              <label for="crear-email" class="form-label">Email</label>
+              <input type="email" class="form-control" id="crear-email" th:field="*{email}" required>
+            </div>
+            <div class="mb-3">
+              <label for="crear-segmento" class="form-label">Segmento</label>
+              <input type="text" class="form-control" id="crear-segmento" th:field="*{segmento}" required>
+            </div>
+            <div class="mb-3">
+              <label for="crear-limiteCredito" class="form-label">Lìmite de crèdito</label>
+              <input type="text" class="form-control" id="crear-limiteCredito" th:field="*{limiteCredito}" required>
+            </div>
+            <div class="mb-3">
+              <label for="crear-estado" class="form-label">Estado</label>
+              <select class="form-select" id="crear-estado" th:field="*{estado}">
+                <option value="true">Activo</option>
+                <option value="false">Inactivo</option>
+              </select>
+            </div>
+            <div class="modal-footer">
+              <button type="submit" class="btn btn-primary">Guardar</button>
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal para Editar Cliente -->
+  <div class="modal fade" id="editarClienteModal" tabindex="-1" aria-labelledby="editarClienteLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="editarClienteLabel">Editar Cliente</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+        </div>
+        <div class="modal-body">
+          <form id="editarClienteForm" method="post" th:action="@{/clientes/editar}" th:object="${cliente}">
+            <input type="hidden" name="id" id="editar-id">
+            <div class="mb-3">
+              <label for="editar-nombres" class="form-label">Nombres</label>
+              <input type="text" class="form-control" id="editar-nombres" th:field="*{nombres}" required>
+            </div>
+            <div class="mb-3">
+              <label for="editar-apellidos" class="form-label">Apellidos</label>
+              <input type="text" class="form-control" id="editar-apellidos" th:field="*{apellidos}">
+            </div>
+            <div class="mb-3">
+              <label for="editar-dni" class="form-label">DNI</label>
+              <input type="text" class="form-control" id="editar-dni" th:field="*{dni}">
+            </div>
+            <div class="mb-3">
+              <label for="editar-direccion" class="form-label">Dirección</label>
+              <input type="text" class="form-control" id="editar-direccion" th:field="*{direccion}">
+            </div>
+            <div class="mb-3">
+              <label for="editar-telefono" class="form-label">Teléfono</label>
+              <input type="number" class="form-control" id="editar-telefono" th:field="*{telefono}" required>
+            </div>
+            <div class="mb-3">
+              <label for="editar-email" class="form-label">Email</label>
+              <input type="email" class="form-control" id="editar-email" th:field="*{email}" required>
+            </div>
+            <div class="mb-3">
+              <label for="editar-segmento" class="form-label">Segmento</label>
+              <input type="text" class="form-control" id="editar-segmento" th:field="*{segmento}" required>
+            </div>
+            <div class="mb-3">
+              <label for="editar-limiteCredito" class="form-label">Límite de crédito</label>
+              <input type="password" class="form-control" id="editar-limiteCredito" th:field="*{limiteCredito}" required>
+            </div>
+            <div class="mb-3">
+              <label for="editar-estado" class="form-label">Estado</label>
+              <select class="form-select" id="editar-estado" th:field="*{estado}">
+                <option value="true">Activo</option>
+                <option value="false">Inactivo</option>
+              </select>
+            </div>
+            <div class="modal-footer">
+              <button type="submit" class="btn btn-primary">Guardar</button>
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal fade" id="detalleClienteModal" tabindex="-1" aria-labelledby="detalleClienteLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="detalleClienteLabel">Detalles del Cliente</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+        </div>
+        <div class="modal-body">
+          <p><strong>Nombres:</strong> <span id="detalle-nombres"></span></p>
+          <p><strong>Apellidos:</strong> <span id="detalle-apellidos"></span></p>
+          <p><strong>DNI:</strong> <span id="detalle-dni"></span></p>
+          <p><strong>Dirección:</strong> <span id="detalle-direccion"></span></p>
+          <p><strong>Telefono:</strong> <span id="detalle-telefono"></span></p>
+          <p><strong>Email:</strong> <span id="detalle-email"></span></p>
+          <p><strong>Segmento:</strong> <span id="detalle-segmento"></span></p>
+          <p><strong>Límite de crédito:</strong> <span id="detalle-limiteCredito"></span></p>
+          <p><strong>Estado:</strong> <span id="detalle-estado"></span></p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

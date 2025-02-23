@@ -1,0 +1,128 @@
+<div th:fragment="proveedores-modals" xmlns:th="http://www.w3.org/1999/xhtml">
+
+  <!-- Modal para Crear Proveedor -->
+  <div class="modal fade" id="crearProveedorModal" tabindex="-1" aria-labelledby="crearProveedorLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="crearProveedorLabel">Crear Proveedor</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+        </div>
+        <div class="modal-body">
+          <form th:action="@{/proveedores/crear}" method="post" th:object="${proveedor}">
+            <div class="mb-3">
+              <label for="crear-nombre" class="form-label">Nombre</label>
+              <input type="text" class="form-control" id="crear-nombre" th:field="*{nombre}" required>
+            </div>
+            <div class="mb-3">
+              <label for="crear-direccion" class="form-label">Dirección</label>
+              <input type="text" class="form-control" id="crear-direccion" th:field="*{direccion}">
+            </div>
+            <div class="mb-3">
+              <label for="crear-telefono" class="form-label">Teléfono</label>
+              <input type="text" class="form-control" id="crear-telefono" th:field="*{telefono}">
+            </div>
+            <div class="mb-3">
+              <label for="crear-ruc" class="form-label">RUC</label>
+              <input type="text" class="form-control" id="crear-ruc" th:field="*{ruc}" required>
+            </div>
+            <div class="mb-3">
+              <label for="crear-email" class="form-label">Correo</label>
+              <input type="email" class="form-control" id="crear-email" th:field="*{email}" required>
+            </div>
+            <div class="mb-3">
+              <label for="crear-nombreContacto" class="form-label">Nombre de Contacto</label>
+              <input type="text" class="form-control" id="crear-nombreContacto" th:field="*{nombreContacto}">
+            </div>
+            <div class="mb-3">
+              <label for="crear-estado" class="form-label">Estado</label>
+              <select class="form-select" id="crear-estado" th:field="*{estado}">
+                <option value="true">Activo</option>
+                <option value="false">Inactivo</option>
+              </select>
+            </div>
+            <div class="modal-footer">
+              <button type="submit" class="btn btn-primary">Guardar</button>
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal para Editar Proveedor -->
+  <div class="modal fade" id="editarProveedorModal" tabindex="-1" aria-labelledby="editarProveedorLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="editarProveedorLabel">Editar Proveedor</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+        </div>
+        <div class="modal-body">
+          <form id="editarProveedorForm" method="post" th:action="@{/proveedores/editar}">
+            <input type="hidden" name="id" id="editar-id">
+            <div class="mb-3">
+              <label for="editar-nombre" class="form-label">Nombre</label>
+              <input type="text" class="form-control" id="editar-nombre" name="nombre" required>
+            </div>
+            <div class="mb-3">
+              <label for="editar-direccion" class="form-label">Dirección</label>
+              <input type="text" class="form-control" id="editar-direccion" name="direccion">
+            </div>
+            <div class="mb-3">
+              <label for="editar-telefono" class="form-label">Teléfono</label>
+              <input type="text" class="form-control" id="editar-telefono" name="telefono">
+            </div>
+            <div class="mb-3">
+              <label for="editar-ruc" class="form-label">RUC</label>
+              <input type="text" class="form-control" id="editar-ruc" name="ruc" required>
+            </div>
+            <div class="mb-3">
+              <label for="editar-email" class="form-label">Correo</label>
+              <input type="email" class="form-control" id="editar-email" name="email" required>
+            </div>
+            <div class="mb-3">
+              <label for="editar-nombreContacto" class="form-label">Nombre de Contacto</label>
+              <input type="text" class="form-control" id="editar-nombreContacto" name="nombreContacto">
+            </div>
+            <div class="mb-3">
+              <label for="editar-estado" class="form-label">Estado</label>
+              <select class="form-select" id="editar-estado" name="estado">
+                <option value="true">Activo</option>
+                <option value="false">Inactivo</option>
+              </select>
+            </div>
+            <div class="modal-footer">
+              <button type="submit" class="btn btn-primary">Guardar</button>
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal fade" id="detalleProveedorModal" tabindex="-1" aria-labelledby="detalleProveedorLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="detalleProveedorLabel">Detalles del Proveedor</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+        </div>
+        <div class="modal-body">
+          <p><strong>Nombre:</strong> <span id="detalle-nombre"></span></p>
+          <p><strong>Dirección:</strong> <span id="detalle-direccion"></span></p>
+          <p><strong>Teléfono:</strong> <span id="detalle-telefono"></span></p>
+          <p><strong>RUC:</strong> <span id="detalle-ruc"></span></p>
+          <p><strong>Correo:</strong> <span id="detalle-email"></span></p>
+          <p><strong>Nombre de Contacto:</strong> <span id="detalle-nombreContacto"></span></p>
+          <p><strong>Estado:</strong> <span id="detalle-estado"></span></p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -6,132 +6,25 @@
   <title>Gestión de Productos</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
-  <style>
-    body {
-        background-color: #f8f9fa;
-        display: flex;
-        flex-direction: column;
-        min-height: 100vh;
-    }
-    .header {
-        background: white;
-        padding: 15px;
-        font-size: 1.5rem;
-        font-weight: bold;
-        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-        width: 100%;
-        position: fixed;
-        top: 0;
-        left: 0;
-        z-index: 1000;
-        display: flex;
-        align-items: center;
-        padding-left: 20px;
-    }
-    .sidebar {
-        width: 250px;
-        background: #343a40;
-        color: white;
-        height: 100vh;
-        position: fixed;
-        top: 60px;
-        padding-top: 20px;
-    }
-    .sidebar a {
-        color: white;
-        padding: 10px;
-        display: flex;
-        align-items: center;
-        text-decoration: none;
-        transition: background 0.3s;
-    }
-    .sidebar a:hover {
-        background: #495057;
-    }
-    .submenu {
-        display: none;
-        overflow: hidden;
-        max-height: 0;
-        transition: max-height 0.3s ease-out;
-    }
-    .submenu.show {
-        display: block;
-        max-height: 500px;
-        transition: max-height 0.3s ease-in;
-    }
-    .menu-toggle {
-        cursor: pointer;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding: 10px;
-    }
-    .content {
-        margin-left: 250px;
-        margin-top: 80px;
-        padding: 20px;
-        flex: 1;
-    }
-    .table-container {
-        background: white;
-        padding: 20px;
-        border-radius: 10px;
-        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-    }
-    .footer {
-        background-color: white;
-        padding: 10px;
-        text-align: center;
-        font-size: 14px;
-        width: 100%;
-        position: fixed;
-        bottom: 0;
-        left: 0;
-        box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
-    }
-  </style>
+  <link rel="stylesheet" th:href="@{/css/styles.css}">
 </head>
 <body>
-
-<div class="header">Sistema de Gestión de Ventas Total Motors</div>
-
-<div class="sidebar">
-  <h4 class="text-center">Menú</h4>
-  <div class="menu-toggle" onclick="toggleSubMenu('ventasSubmenu')">
-    <span>Ventas</span> <i class="bi bi-chevron-down"></i>
-  </div>
-  <div id="ventasSubmenu" class="submenu">
-    <a href="/pedidos">Registrar pedido</a>
-    <a href="/pedidos/cobrar">Cobrar pedido</a>
-  </div>
-  <div class="menu-toggle" onclick="toggleSubMenu('InventarioSubmenu')">
-    <span>Inventario</span> <i class="bi bi-chevron-down"></i>
-  </div>
-  <div id="InventarioSubmenu" class="submenu">
-    <a href="/productos">Productos</a>
-    <a href="/stock">Stock</a>
-  </div>
-  <a href="/clientes">Clientes</a>
-  <div class="menu-toggle" onclick="toggleSubMenu('mantenimientoSubmenu')">
-    <span>Mantenimiento</span> <i class="bi bi-chevron-down"></i>
-  </div>
-  <div id="mantenimientoSubmenu" class="submenu">
-    <a href="/proveedores">Proveedores</a>
-    <a href="/vehiculos">Vehículos</a>
-    <a href="/usuarios">Usuarios</a>
-    <a href="/categorias">Categorías</a>
-  </div>
-</div>
-
+<div th:replace="~{fragments/header :: header}"></div>
+<div th:replace="~{fragments/sidebar :: sidebar}"></div>
 <div class="content">
+  <div th:if="${mensajeError}" class="alert alert-danger position-fixed top-0 start-50 translate-middle-x mt-3" role="alert">
+    <span th:text="${mensajeError}"></span>
+  </div>
+
   <h2>Gestión de Productos</h2>
   <div class="d-flex justify-content-between mb-3">
-    <div>
+    <!--div>
       <label for="buscarProducto" class="form-label">Buscar producto:</label>
-      <input type="text" id="buscarProducto" class="form-control" placeholder="Ingrese nombre o código">
-    </div>
+      <input type="text" id="buscarProducto" class="form-control" placeholder="Ingrese nombre o RUC">
+    </--div-->
+    <div></div>
     <div class="align-self-end">
-      <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#modalCrearProducto">Crear Producto</button>
+      <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#crearProductosModal">Crear Producto</button>
     </div>
   </div>
 
@@ -155,139 +48,55 @@
         <td th:text="${producto.stock}"></td>
         <td th:text="${producto.categoria.nombreCategoria}"></td>
         <td>
-          <button class="btn btn-warning btn-sm" data-bs-toggle="tooltip" title="Editar">
+          <button class="btn btn-warning btn-sm editar-btn" th:attr="data-id=${producto.id}" data-bs-toggle="modal" data-bs-target="#editarProductosModal">
             <i class="bi bi-pencil-square"></i>
           </button>
-          <button class="btn btn-danger btn-sm" data-bs-toggle="tooltip" title="Eliminar">
-            <i class="bi bi-trash"></i>
+          <button class="btn btn-info btn-sm ver-detalle-btn" th:attr="data-id=${producto.id}" data-bs-toggle="modal" data-bs-target="#detalleProductosModal">
+            <i class="bi bi-eye"></i>
           </button>
+          <a th:href="@{'/productos/eliminar/' + ${producto.id}}" class="btn btn-danger btn-sm" title="Eliminar" onclick="return confirm('¿Está seguro de eliminar este producto?');">
+            <i class="bi bi-trash"></i>
+          </a>
         </td>
       </tr>
       </tbody>
     </table>
   </div>
+
+  <!-- Agregar paginación -->
+  <nav aria-label="Page navigation" class="d-flex justify-content-center">
+    <ul class="pagination">
+      <li class="page-item" th:classappend="${currentPage == 0} ? 'disabled'">
+        <a class="page-link" th:href="@{/productos(page=${currentPage - 1})}" aria-label="Anterior">
+          <span aria-hidden="true">&laquo;</span>
+        </a>
+      </li>
+      <li class="page-item" th:each="i : ${#numbers.sequence(0, totalPages - 1)}"
+          th:classappend="${currentPage == i} ? 'active'">
+        <a class="page-link" th:href="@{/productos(page=${i})}" th:text="${i + 1}"></a>
+      </li>
+      <li class="page-item" th:classappend="${currentPage == totalPages - 1} ? 'disabled'">
+        <a class="page-link" th:href="@{/productos(page=${currentPage + 1})}" aria-label="Siguiente">
+          <span aria-hidden="true">&raquo;</span>
+        </a>
+      </li>
+    </ul>
+  </nav>
+
 </div>
-
-<!-- Modal para Crear Producto -->
-<div class="modal fade" id="modalCrearProducto" tabindex="-1" aria-labelledby="modalCrearProductoLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title">Crear Producto</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-        <form th:action="@{/productos/crear}" method="post" th:object="${producto}">
-          <div class="mb-3">
-            <label class="form-label">Nombre</label>
-            <input type="text" class="form-control" th:field="*{nombre}" required>
-          </div>
-          <div class="mb-3">
-            <label class="form-label">Precio Unitario</label>
-            <input type="number" step="0.01" class="form-control" th:field="*{precioUnitario}" required>
-          </div>
-          <div class="mb-3">
-            <label class="form-label">Stock</label>
-            <input type="number" class="form-control" th:field="*{stock}" required>
-          </div>
-
-          <!-- Categoría -->
-          <div class="mb-3">
-            <label class="form-label">Categoría</label>
-            <select class="form-select" th:field="*{categoria.id}" required>
-              <option value="">Seleccione una categoría</option>
-              <option th:each="categoria : ${categorias}" th:value="${categoria.id}" th:text="${categoria.nombreCategoria}"></option>
-            </select>
-          </div>
-
-          <!-- Proveedor -->
-          <div class="mb-3">
-            <label class="form-label">Proveedor</label>
-            <select class="form-select" th:field="*{proveedor.id}" required>
-              <option value="">Seleccione un proveedor</option>
-              <option th:each="proveedor : ${proveedores}" th:value="${proveedor.id}" th:text="${proveedor.nombre}"></option>
-            </select>
-          </div>
-
-          <!-- Selección de vehículos -->
-          <div class="mb-3">
-            <label class="form-label">Vehículos</label>
-            <div class="d-flex">
-              <select class="form-select" id="vehiculoSelect">
-                <option value="">Seleccione un vehículo</option>
-                <option th:each="vehiculo : ${vehiculos}" th:value="${vehiculo.id}" th:text="${vehiculo.modelo}"></option>
-              </select>
-              <button type="button" class="btn btn-primary ms-2" onclick="agregarVehiculo()">Agregar</button>
-            </div>
-          </div>
-
-          <!-- Contenedor de vehículos seleccionados -->
-          <div class="mb-3">
-            <label class="form-label">Vehículos Agregados:</label>
-            <ul id="vehiculosSeleccionados" class="list-group"></ul>
-          </div>
-
-          <!-- Campo oculto con los IDs de los vehículos seleccionados -->
-          <input type="hidden" id="vehiculosInput" name="vehiculosSeleccionados">
-
-          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-            <button type="submit" class="btn btn-primary">Guardar</button>
-          </div>
-        </form>
-      </div>
-    </div>
-  </div>
-</div>
-
-<div class="footer">
-  <p>&copy; Todos los derechos reservados Grupo 1</p>
-</div>
-
+<div th:replace="~{fragments/productos-modals :: productos-modals}"></div>
+<div th:replace="~{fragments/footer_script :: footer}"></div>
+<script th:src="@{/js/productos.js}"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script>
   function toggleSubMenu(menuId) {
-    var submenu = document.getElementById(menuId);
-    submenu.classList.toggle("show");
-  }
-
-  let vehiculosSeleccionados = [];
-
-  function agregarVehiculo() {
-    const select = document.getElementById("vehiculoSelect");
-    const vehiculosLista = document.getElementById("vehiculosSeleccionados");
-    const vehiculosInput = document.getElementById("vehiculosInput");
-
-    const vehiculoId = select.value;
-    const vehiculoTexto = select.options[select.selectedIndex].text;
-
-    if (vehiculoId && !vehiculosSeleccionados.includes(vehiculoId)) {
-      // Agregar vehículo a la lista
-      vehiculosSeleccionados.push(vehiculoId);
-
-      // Crear elemento en la lista
-      let li = document.createElement("li");
-      li.className = "list-group-item d-flex justify-content-between align-items-center";
-      li.innerHTML = `${vehiculoTexto} <button class="btn btn-danger btn-sm" onclick="eliminarVehiculo('${vehiculoId}', this)">Eliminar</button>`;
-      vehiculosLista.appendChild(li);
-
-      // Actualizar input oculto
-      vehiculosInput.value = vehiculosSeleccionados.join(",");
-    }
-  }
-
-  function eliminarVehiculo(id, button) {
-    // Eliminar del array
-    vehiculosSeleccionados = vehiculosSeleccionados.filter(v => v !== id);
-
-    // Eliminar del DOM
-    button.parentElement.remove();
-
-    // Actualizar input oculto
-    document.getElementById("vehiculosInput").value = vehiculosSeleccionados.join(",");
+      var submenu = document.getElementById(menuId);
+      if (submenu.classList.contains("show")) {
+          submenu.classList.remove("show");
+      } else {
+          submenu.classList.add("show");
+      }
   }
 </script>
-
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-
 </body>
 </html>

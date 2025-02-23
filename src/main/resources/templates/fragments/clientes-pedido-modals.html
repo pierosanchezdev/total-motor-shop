@@ -1,0 +1,44 @@
+<div th:fragment="clientes-pedido-modals" xmlns:th="http://www.w3.org/1999/xhtml">
+  <div class="modal fade" id="agregarClienteModal" tabindex="-1" aria-labelledby="agregarClienteModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Seleccionar Cliente</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+        </div>
+        <div class="modal-body">
+          <!-- Buscador de clientes -->
+          <div class="mb-3">
+            <label for="buscarDNI" class="form-label">Buscar por DNI:</label>
+            <input type="text" class="form-control" id="buscarDNI" placeholder="Ingrese DNI del cliente">
+          </div>
+
+          <!-- Lista de clientes -->
+          <table class="table table-striped">
+            <thead>
+            <tr>
+              <th>ID</th>
+              <th>DNI</th>
+              <th>Nombre</th>
+              <th>Acción</th>
+            </tr>
+            </thead>
+            <tbody id="clientesLista">
+            <tr th:each="cliente : ${clientes}">
+              <td th:text="${cliente.id}"></td>
+              <td th:text="${cliente.dni}"></td>
+              <td th:text="${cliente.nombres} + ' ' + ${cliente.apellidos}"></td>
+              <td>
+                <button class="btn btn-success btn-sm" onclick="seleccionarCliente(this)"
+                        th:attr="data-id=${cliente.id}, data-nombre=${cliente.nombres} + ' ' + ${cliente.apellidos}">
+                  Seleccionar
+                </button>
+              </td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

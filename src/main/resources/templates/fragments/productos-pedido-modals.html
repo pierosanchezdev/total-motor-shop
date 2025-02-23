@@ -1,0 +1,46 @@
+<div th:fragment=productos-pedido-modals xmlns:th="http://www.w3.org/1999/xhtml">
+  <div class="modal fade" id="agregarProductoModal" tabindex="-1" aria-labelledby="agregarProductoModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Seleccionar Producto</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+        </div>
+        <div class="modal-body">
+          <!-- Buscador de productos -->
+          <div class="mb-3">
+            <label for="buscarProducto" class="form-label">Buscar Producto:</label>
+            <input type="text" class="form-control" id="buscarProducto" placeholder="Ingrese nombre del producto">
+          </div>
+
+          <!-- Lista de productos -->
+          <table class="table table-striped">
+            <thead>
+            <tr>
+              <th>ID</th>
+              <th>Nombre</th>
+              <th>Precio</th>
+              <th>Stock</th>
+              <th>Acción</th>
+            </tr>
+            </thead>
+            <tbody id="productosLista">
+            <tr th:each="producto : ${productos}">
+              <td th:text="${producto.id}"></td>
+              <td th:text="${producto.nombre}"></td>
+              <td th:text="'S/ ' + ${producto.precioUnitario}"></td>
+              <td th:text="${producto.stock}" class="stock-cell"></td>
+              <td>
+                <button class="btn btn-success btn-sm" onclick="seleccionarProducto(this)"
+                        th:attr="data-id=${producto.id}, data-nombre=${producto.nombre}, data-precio=${producto.precioUnitario}">
+                  Seleccionar
+                </button>
+              </td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

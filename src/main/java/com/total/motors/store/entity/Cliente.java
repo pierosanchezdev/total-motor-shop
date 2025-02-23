@@ -13,26 +13,12 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @NoArgsConstructor
-public class Cliente {
+public class Cliente extends Persona {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(nullable = false, unique = true)
-    private String dni;
-    @Column(nullable = false)
-    private String nombres;
-    @Column(nullable = false)
-    private String apellidos;
-    private String direccion;
-    private String telefono;
-    @Column(unique = true)
-    private String email;
+
     private String segmento;
     private BigDecimal limiteCredito;
-    private boolean estado;
-    private LocalDateTime fechaRegistro;
-    private String usuarioRegistro;
-    private LocalDateTime fechaActualizacion;
-    private String usuarioActualizacion;
 }

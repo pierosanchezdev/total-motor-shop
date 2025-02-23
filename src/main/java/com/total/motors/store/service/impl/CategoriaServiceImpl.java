@@ -2,10 +2,12 @@ package com.total.motors.store.service.impl;
 
 import com.total.motors.store.dao.CategoriaDao;
 import com.total.motors.store.entity.Categoria;
+import com.total.motors.store.entity.Categoria;
 import com.total.motors.store.service.CategoriaService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -18,27 +20,46 @@ public class CategoriaServiceImpl implements CategoriaService {
     private final CategoriaDao categoriaDao;
 
     @Override
+    public Page<Categoria> listarCategoriasPaginable(int page) {
+        Pageable pageable = PageRequest.of(page, 5);
+        return categoriaDao.findAll(pageable);
+    }
+
+    @Override
     public List<Categoria> listarCategorias() {
         return categoriaDao.findAll();
     }
 
     @Override
-    public Page<Categoria> listarCategoriasPaginado(int page, int size) {
-        return categoriaDao.findAll(PageRequest.of(page, size));
+    public void crearCategoria(Categoria categoria) {
+        categoriaDao.save(categoria);
     }
 
     @Override
-    public Categoria guardarCategoria(Categoria categoria) {
-        return categoriaDao.save(categoria);
+    public Categoria obtenerCategoriaPorId(Long id) {
+        return categoriaDao.findById(id).orElseThrow(() -> new RuntimeException("Categoria no encontrado"));
     }
 
     @Override
-    public Optional<Categoria> obtenerCategoriaPorId(Long id) {
-        return categoriaDao.findById(id);
+    public void actualizarCategoria(Categoria categoria) {
+        if (categoriaDao.existsById(categoria.getId())) {
+            categoriaDao.save(categoria);
+        } else {
+            throw new RuntimeException("Categoria no encontrado");
+        }
     }
 
     @Override
     public void eliminarCategoria(Long id) {
-        categoriaDao.deleteById(id);
+        if (categoriaDao.existsById(id)) {
+            categoriaDao.deleteById(id);
+        } else {
+            throw new RuntimeException("Categoria no encontrado");
+        }
+    }
+
+    @Override
+    public List<Categoria> obtenerCategoriasPorId(List<Long> ids) {
+        return categoriaDao.findAllById(ids);
     }
 }

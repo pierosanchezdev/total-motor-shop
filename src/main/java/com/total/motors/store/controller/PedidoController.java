@@ -49,7 +49,7 @@ public class PedidoController {
 
         pedidoService.crearPedido(idCliente, productosSeleccionados, "admin");
 
-        return "redirect:/menu"; // Redirigir al menú
+        return "redirect:/menu";
     }
 
     @GetMapping("/cobrar")

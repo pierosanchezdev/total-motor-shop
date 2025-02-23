@@ -6,139 +6,23 @@
   <title>Gestión de Vehículos</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
-  <style>
-    body {
-        background-color: #f8f9fa;
-        display: flex;
-        flex-direction: column;
-        min-height: 100vh;
-    }
-    /* Cabecera */
-    .header {
-        background: white;
-        padding: 15px;
-        font-size: 1.5rem;
-        font-weight: bold;
-        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-        width: 100%;
-        position: fixed;
-        top: 0;
-        left: 0;
-        z-index: 1000;
-        display: flex;
-        align-items: center;
-        padding-left: 20px;
-    }
-    /* Sidebar */
-    .sidebar {
-        width: 250px;
-        background: #343a40;
-        color: white;
-        height: 100vh;
-        position: fixed;
-        top: 60px;
-        padding-top: 20px;
-    }
-    .sidebar a {
-        color: white;
-        padding: 10px;
-        display: flex;
-        align-items: center;
-        text-decoration: none;
-        transition: background 0.3s;
-    }
-    .sidebar a:hover {
-        background: #495057;
-    }
-    /* Submenús dinámicos */
-    .submenu {
-        display: none;
-        overflow: hidden;
-        max-height: 0;
-        transition: max-height 0.3s ease-out;
-    }
-    .submenu.show {
-        display: block;
-        max-height: 500px;
-        transition: max-height 0.3s ease-in;
-    }
-    .menu-toggle {
-        cursor: pointer;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding: 10px;
-    }
-    /* Contenido */
-    .content {
-        margin-left: 250px;
-        margin-top: 80px;
-        padding: 20px;
-        flex: 1;
-    }
-    .table-container {
-        background: white;
-        padding: 20px;
-        border-radius: 10px;
-        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-    }
-    /* Footer */
-    .footer {
-        background-color: white;
-        padding: 10px;
-        text-align: center;
-        font-size: 14px;
-        width: 100%;
-        position: fixed;
-        bottom: 0;
-        left: 0;
-        box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
-    }
-  </style>
+  <link rel="stylesheet" th:href="@{/css/styles.css}">
 </head>
 <body>
-
-<!-- Cabecera -->
-<div class="header">Sistema de Gestión de Ventas Total Motors</div>
-
-<!-- Sidebar -->
-<div class="sidebar">
-  <h4 class="text-center">Menú</h4>
-  <div class="menu-toggle" onclick="toggleSubMenu('ventasSubmenu')">
-    <span>Ventas</span> <i class="bi bi-chevron-down"></i>
-  </div>
-  <div id="ventasSubmenu" class="submenu">
-    <a href="/pedidos">Registrar pedido</a>
-    <a href="/pedidos/cobrar">Cobrar pedido</a>
-  </div>
-  <div class="menu-toggle" onclick="toggleSubMenu('InventarioSubmenu')">
-    <span>Inventario</span> <i class="bi bi-chevron-down"></i>
-  </div>
-  <div id="InventarioSubmenu" class="submenu">
-    <a href="/productos">Productos</a>
-    <a href="/stock">Stock</a>
-  </div>
-
-  <a href="/clientes">Clientes</a>
-  <div class="menu-toggle" onclick="toggleSubMenu('mantenimientoSubmenu')">
-    <span>Mantenimiento</span> <i class="bi bi-chevron-down"></i>
-  </div>
-  <div id="mantenimientoSubmenu" class="submenu">
-    <a href="/proveedores">Proveedores</a>
-    <a href="/vehiculos">Vehículos</a>
-    <a href="/usuarios">Usuarios</a>
-    <a href="/categorias">Categorías</a>
-  </div>
-</div>
-
-<!-- Contenido Principal -->
+<div th:replace="~{fragments/header :: header}"></div>
+<div th:replace="~{fragments/sidebar :: sidebar}"></div>
 <div class="content">
-  <h2>Gestión de Vehículos</h2>
+  <div th:if="${mensajeError}" class="alert alert-danger position-fixed top-0 start-50 translate-middle-x mt-3" role="alert">
+    <span th:text="${mensajeError}"></span>
+  </div>
+
+  <h2>Gestión de Vehìculos</h2>
   <div class="d-flex justify-content-between mb-3">
-    <div>
-      <label for="buscarVehiculo" class="form-label">Buscar vehículo:</label>
-      <input type="text" id="buscarVehiculo" class="form-control" placeholder="Ingrese marca o modelo">
-    </div>
+    <!--div>
+      <label for="buscarVehiculo" class="form-label">Buscar vehiculo:</label>
+      <input type="text" id="buscarVehiculo" class="form-control" placeholder="Ingrese nombre o RUC">
+    </--div-->
+    <div></div>
     <div class="align-self-end">
       <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#crearVehiculoModal">Crear Vehículo</button>
     </div>
@@ -152,8 +36,7 @@
         <th>Marca</th>
         <th>Modelo</th>
         <th>Año</th>
-        <th>Tipo Caja</th>
-        <th>Versión</th>
+        <th>Estado</th>
         <th>Acciones</th>
       </tr>
       </thead>
@@ -162,69 +45,58 @@
         <td th:text="${vehiculo.id}"></td>
         <td th:text="${vehiculo.marca}"></td>
         <td th:text="${vehiculo.modelo}"></td>
-        <td th:text="${vehiculo.anio}"></td>
-        <td th:text="${vehiculo.tipoCaja}"></td>
         <td th:text="${vehiculo.version}"></td>
+        <td th:text="${vehiculo.estado ? 'Activo' : 'Inactivo'}"></td>
         <td>
-          <button class="btn btn-warning btn-sm"><i class="bi bi-pencil-square"></i></button>
-          <button class="btn btn-danger btn-sm"><i class="bi bi-trash"></i></button>
-          <button class="btn btn-info btn-sm"><i class="bi bi-eye"></i></button>
+          <button class="btn btn-warning btn-sm editar-btn" th:attr="data-id=${vehiculo.id}" data-bs-toggle="modal" data-bs-target="#editarVehiculoModal">
+            <i class="bi bi-pencil-square"></i>
+          </button>
+          <button class="btn btn-info btn-sm ver-detalle-btn" th:attr="data-id=${vehiculo.id}" data-bs-toggle="modal" data-bs-target="#detalleVehiculoModal">
+            <i class="bi bi-eye"></i>
+          </button>
+          <a th:href="@{'/vehiculos/eliminar/' + ${vehiculo.id}}" class="btn btn-danger btn-sm" title="Eliminar" onclick="return confirm('¿Está seguro de eliminar este vehiculo?');">
+            <i class="bi bi-trash"></i>
+          </a>
         </td>
       </tr>
       </tbody>
     </table>
   </div>
-</div>
 
-<!-- Modal para Crear Vehículo -->
-<div class="modal fade" id="crearVehiculoModal" tabindex="-1" aria-labelledby="crearVehiculoModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title">Crear Vehículo</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-      </div>
-      <div class="modal-body">
-        <form th:action="@{/vehiculos/crear}" method="post">
-          <div class="mb-3">
-            <label class="form-label">Marca</label>
-            <input type="text" class="form-control" name="marca" required>
-          </div>
-          <div class="mb-3">
-            <label class="form-label">Modelo</label>
-            <input type="text" class="form-control" name="modelo" required>
-          </div>
-          <div class="mb-3">
-            <label class="form-label">Año</label>
-            <input type="number" class="form-control" name="anio" required>
-          </div>
-          <div class="mb-3">
-            <label class="form-label">Tipo Caja</label>
-            <input type="text" class="form-control" name="tipoCaja">
-          </div>
-          <div class="mb-3">
-            <label class="form-label">Versión</label>
-            <input type="text" class="form-control" name="version">
-          </div>
-          <button type="submit" class="btn btn-primary">Guardar Vehículo</button>
-        </form>
-      </div>
-    </div>
-  </div>
-</div>
+  <!-- Agregar paginación -->
+  <nav aria-label="Page navigation" class="d-flex justify-content-center">
+    <ul class="pagination">
+      <li class="page-item" th:classappend="${currentPage == 0} ? 'disabled'">
+        <a class="page-link" th:href="@{/vehiculos(page=${currentPage - 1})}" aria-label="Anterior">
+          <span aria-hidden="true">&laquo;</span>
+        </a>
+      </li>
+      <li class="page-item" th:each="i : ${#numbers.sequence(0, totalPages - 1)}"
+          th:classappend="${currentPage == i} ? 'active'">
+        <a class="page-link" th:href="@{/vehiculos(page=${i})}" th:text="${i + 1}"></a>
+      </li>
+      <li class="page-item" th:classappend="${currentPage == totalPages - 1} ? 'disabled'">
+        <a class="page-link" th:href="@{/vehiculos(page=${currentPage + 1})}" aria-label="Siguiente">
+          <span aria-hidden="true">&raquo;</span>
+        </a>
+      </li>
+    </ul>
+  </nav>
 
-<!-- Footer -->
-<div class="footer">
-  <p>&copy; Todos los derechos reservados Grupo 1</p>
 </div>
-
+<div th:replace="~{fragments/vehiculos-modals :: vehiculos-modals}"></div>
+<div th:replace="~{fragments/footer_script :: footer}"></div>
+<script th:src="@{/js/vehiculos.js}"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script>
   function toggleSubMenu(menuId) {
-      document.getElementById(menuId).classList.toggle("show");
+      var submenu = document.getElementById(menuId);
+      if (submenu.classList.contains("show")) {
+          submenu.classList.remove("show");
+      } else {
+          submenu.classList.add("show");
+      }
   }
 </script>
-
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-
 </body>
 </html>
